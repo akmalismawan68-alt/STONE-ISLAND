@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stone Island — Keranjang</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+body{background:linear-gradient(135deg,#0d0f0d,#1a1f1a);color:#eaeaea;padding:15px;min-height:100vh}
+
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;gap:12px}
+.header h2{color:#FFD700;font-size:20px;flex:1}
+
+.btn-kembali{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,215,0,0.3);color:#FFD700;padding:8px 16px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;transition:background 0.2s,border-color 0.2s;white-space:nowrap}
+.btn-kembali:hover{background:rgba(255,215,0,0.12);border-color:#FFD700;color:#FFD700}
+
+/* EMPTY */
+.empty-cart{text-align:center;padding:60px 20px;color:#777}
+.empty-cart .icon{font-size:64px;margin-bottom:16px}
+.empty-cart p{font-size:16px;margin-bottom:20px}
+.empty-cart a{display:inline-block;background:#FFD700;color:black;padding:12px 28px;border-radius:10px;font-weight:700;text-decoration:none;transition:opacity 0.2s}
+.empty-cart a:hover{opacity:0.85}
+
+/* CART ITEM */
+.cart-item{display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.04);border-radius:15px;padding:10px;margin-bottom:10px;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.06);transition:border-color 0.2s}
+.cart-item:hover{border-color:rgba(255,215,0,0.2)}
+.cart-left{display:flex;gap:10px;align-items:center;flex:1;min-width:0}
+.cart-left img{width:65px;height:65px;object-fit:cover;border-radius:10px;border:2px solid #FFD700;flex-shrink:0}
+.cart-info{min-width:0}
+.cart-info b{color:#FFD700;display:block;margin-bottom:4px;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px}
+.cart-info span{font-size:12px;color:#bbb;display:block;line-height:1.5}
+.subtotal{color:#FFD700 !important;font-size:13px !important;font-weight:600}
+
+/* QTY */
+.qty-controls{display:flex;align-items:center;gap:6px;margin-top:6px}
+.qty-btn{background:rgba(255,255,255,0.1);border:1px solid #444;color:white;width:26px;height:26px;border-radius:6px;cursor:pointer;font-size:16px;line-height:1;display:flex;align-items:center;justify-content:center;transition:background 0.2s}
+.qty-btn:hover{background:rgba(255,215,0,0.15)}
+.qty-num{font-size:14px;font-weight:600;min-width:24px;text-align:center;color:white}
+
+/* HAPUS */
+.btn-hapus{background:#ff3b3b;border:none;padding:6px 12px;border-radius:8px;color:white;cursor:pointer;font-size:13px;flex-shrink:0;margin-left:8px;transition:background 0.2s}
+.btn-hapus:hover{background:#cc2222}
+
+/* TOTAL */
+.total-box{margin-top:20px;background:rgba(255,255,255,0.05);padding:18px;border-radius:15px;text-align:center;border:1px solid rgba(255,215,0,0.15)}
+.total-box p{color:#aaa;font-size:14px}
+.total-box h3{color:#FFD700;margin:8px 0 16px;font-size:22px}
+.actions{display:flex;gap:10px}
+.btn{flex:1;padding:12px;border-radius:10px;border:none;cursor:pointer;font-weight:bold;font-size:14px;transition:opacity 0.2s,transform 0.15s}
+.btn:hover{opacity:0.88;transform:translateY(-1px)}
+.btn-clear{background:rgba(255,59,59,0.15);color:#ff6b6b;border:1px solid rgba(255,59,59,0.3)}
+.btn-wa{background:#FFD700;color:black}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a href="index.html" class="btn-kembali">← Kembali Belanja</a>
+  <h2>🧭 Stone Island Cart</h2>
+</div>
+
+<div id="cart-container"></div>
+
+<div class="total-box" id="total-box" style="display:none">
+  <p>Total yang harus dibayar:</p>
+  <h3 id="total">Rp 0</h3>
+  <div class="actions">
+    <button class="btn btn-clear" onclick="kosongkanKeranjang()">🗑️ Kosongkan</button>
+    <button class="btn btn-wa" onclick="checkoutWA()">💬 Checkout WhatsApp</button>
+  </div>
+</div>
+
+<script>
+/* ===== KEY SAMA dengan index.html: 'si_cart', field: 'jumlah' ===== */
+function getCart(){return JSON.parse(localStorage.getItem('si_cart')||'[]')}
+function saveCart(cart){localStorage.setItem('si_cart',JSON.stringify(cart))}
+
+function renderCart(){
+  const cart=getCart();
+  const container=document.getElementById('cart-container');
+  const totalBox=document.getElementById('total-box');
+  container.innerHTML='';
+
+  if(!cart.length){
+    container.innerHTML=`
+      <div class="empty-cart">
+        <div class="icon">🛒</div>
+        <p>Keranjang kamu masih kosong.</p>
+        <a href="index.html">← Mulai Belanja</a>
+      </div>`;
+    totalBox.style.display='none';
+    return;
+  }
+
+  totalBox.style.display='block';
+  let total=0;
+
+  cart.forEach((item,index)=>{
+    const jumlah=item.jumlah||1;
+    const subtotal=item.harga*jumlah;
+    total+=subtotal;
+    container.innerHTML+=`
+      <div class="cart-item">
+        <div class="cart-left">
+          <img src="${item.img||''}" alt="${item.nama}"
+               onerror="this.src='https://placehold.co/65x65/1a1a1a/FFD700?text=SI'">
+          <div class="cart-info">
+            <b title="${item.nama}">${item.nama}</b>
+            <span>Harga: Rp ${item.harga.toLocaleString('id-ID')}</span>
+            <span class="subtotal">Subtotal: Rp ${subtotal.toLocaleString('id-ID')}</span>
+            <div class="qty-controls">
+              <button class="qty-btn" onclick="ubahJumlah(${index},-1)">−</button>
+              <span class="qty-num">${jumlah}</span>
+              <button class="qty-btn" onclick="ubahJumlah(${index},1)">+</button>
+            </div>
+          </div>
+        </div>
+        <button class="btn-hapus" onclick="hapusItem(${index})">Hapus</button>
+      </div>`;
+  });
+
+  document.getElementById('total').innerText='Rp '+total.toLocaleString('id-ID');
+}
+
+function hapusItem(index){
+  const cart=getCart();cart.splice(index,1);saveCart(cart);renderCart();
+}
+
+function ubahJumlah(index,delta){
+  const cart=getCart();
+  cart[index].jumlah=(cart[index].jumlah||1)+delta;
+  if(cart[index].jumlah<=0)cart.splice(index,1);
+  saveCart(cart);renderCart();
+}
+
+function kosongkanKeranjang(){
+  if(confirm('Yakin ingin mengosongkan keranjang?')){saveCart([]);renderCart();}
+}
+
+function checkoutWA(){
+  const cart=getCart();
+  if(!cart.length){alert('Keranjang kosong!');return;}
+  let pesan='🧾 *STRUK PEMBELIAN STONE ISLAND*%0A%0A';
+  let total=0;
+  cart.forEach(item=>{
+    const j=item.jumlah||1;
+    const sub=item.harga*j;
+    total+=sub;
+    pesan+=`- ${item.nama}%0A`;
+    pesan+=`  ${j} x Rp ${item.harga.toLocaleString('id-ID')}%0A`;
+    pesan+=`  Subtotal: Rp ${sub.toLocaleString('id-ID')}%0A%0A`;
+  });
+  pesan+=`💰 *Total: Rp ${total.toLocaleString('id-ID')}*%0A`;
+  pesan+=`%0APesanan Anda sedang dikemas 📦`;
+  window.open(`https://wa.me/62895397660506?text=${pesan}`,'_blank');
+}
+
+renderCart();
+</script>
+</body>
+</html>
