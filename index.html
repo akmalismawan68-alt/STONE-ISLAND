@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stone Island</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="toast-notif" id="toastNotif"></div>
+
+<!-- LOGIN REQUIRED MODAL -->
+<div class="modal-overlay" id="loginModal" onclick="closeLoginModal(event)">
+  <div class="modal-box">
+    <span class="modal-icon">🔒</span>
+    <h3>Login Diperlukan</h3>
+    <p>Kamu harus <span>login</span> terlebih dahulu untuk menambahkan produk ke keranjang.</p>
+    <div class="modal-actions">
+      <a href="login_combined.html" class="modal-btn-login">🚀 Login Sekarang</a>
+      <button class="modal-btn-cancel" onclick="closeLoginModal()">Nanti Saja</button>
+    </div>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <a class="logo" href="#">
+    <img src="si.png" alt="Logo">
+    <span>Stone Island</span>
+  </a>
+  <button class="sidebar-close-btn" onclick="closeSidebar()">✕</button>
+  <div class="sidebar-search">
+    <input type="text" id="searchDesktop" placeholder="🔍 Cari produk..." oninput="handleSearch(this.value)">
+  </div>
+  <nav class="sidebar-nav">
+    <a href="#" class="active" onclick="closeSidebar()">🏠 Home</a>
+    <a href="#product" onclick="closeSidebar()">👕 Produk</a>
+    <a href="#" onclick="closeSidebar()">🏷️ Promotion</a>
+    <a href="#about" onclick="closeSidebar()">ℹ️ Tentang Kami</a>
+  </nav>
+  <div class="sidebar-bottom">
+    <span class="user-greeting" id="userGreeting" style="display:none"></span>
+    <a href="Keranjang.html" class="cart-link">🛒 Keranjang <span class="cart-badge" id="cartBadge">0</span></a>
+    <button onclick="handleAuthBtn()" id="loginBtn">Login</button>
+  </div>
+</aside>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+<button class="hamburger" onclick="toggleSidebar()"><span></span><span></span><span></span></button>
+
+<div class="main-content">
+
+  <!-- HERO -->
+  <div class="about-hero">
+    <h2>Selamat Datang di Stone Island</h2>
+    <p>Brand fashion premium dengan kualitas terbaik dan desain modern.</p>
+    <a href="#product" class="btn-slide">Lihat Produk</a>
+  </div>
+
+  <!-- ======================================================
+       CAROUSEL — PREMIUM REDESIGN
+       ====================================================== -->
+  <div class="fts">
+    <div id="carouselExampleRide" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+
+      <!-- Indicator dots (bottom-right pills) -->
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleRide" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleRide" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleRide" data-bs-slide-to="2" aria-label="Slide 3"></button>
+      </div>
+
+      <div class="carousel-inner">
+
+        <!-- SLIDE 1 -->
+        <div class="carousel-item active">
+          <img src="topi2.jpg" class="d-block w-100" alt="Topi">
+          <div class="carousel-caption-custom">
+            <span class="slide-label">Koleksi Terbaru</span>
+            <span class="slide-bar"></span>
+            <h3>Topi Premium<br>Stone Island</h3>
+            <p>Tampil stylish dengan koleksi topi eksklusif Stone Island — ikon kompas yang tak tertandingi.</p>
+            <a href="#product" class="btn-slide">Lihat Produk →</a>
+          </div>
+        </div>
+
+        <!-- SLIDE 2 -->
+        <div class="carousel-item">
+          <img src="switer.jpg" class="d-block w-100" alt="Sweater">
+          <div class="carousel-caption-custom">
+            <span class="slide-label">Edisi Eksklusif</span>
+            <span class="slide-bar"></span>
+            <h3>Sweater &amp;<br>Crewneck Mewah</h3>
+            <p>Kenyamanan premium berpadu dengan desain modern — sempurna untuk setiap kesempatan.</p>
+            <a href="#product" class="btn-slide">Lihat Produk →</a>
+          </div>
+        </div>
+
+        <!-- SLIDE 3 -->
+        <div class="carousel-item">
+          <img src="jaket.jpg" class="d-block w-100" alt="Jaket">
+          <div class="carousel-caption-custom">
+            <span class="slide-label">Best Seller</span>
+            <span class="slide-bar"></span>
+            <h3>Jaket Ikonik<br>Stone Island</h3>
+            <p>Material inovatif, teknik pewarnaan khusus — warisan desain Italia sejak 1982.</p>
+            <a href="#product" class="btn-slide">Lihat Produk →</a>
+          </div>
+        </div>
+
+      </div><!-- /.carousel-inner -->
+
+      <!-- Prev / Next buttons -->
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleRide" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleRide" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+
+      <!-- Progress bar -->
+      <div class="carousel-progress"></div>
+
+    </div><!-- /#carouselExampleRide -->
+  </div><!-- /.fts -->
+  <!-- ====== END CAROUSEL ====== -->
+
+  <section class="info">
+    <div>🚚 Free Shipping</div>
+    <div>💳 Secure Payment</div>
+    <div>💰 Money Back</div>
+    <div>📞 Support 24/7</div>
+  </section>
+
+  <div class="section-title">Kategori</div>
+  <section class="categories">
+    <div class="cat-card" onclick="filterKategori('jaket',this)">
+      <img src="e.jpg" alt="Jaket"><div class="cat-label">Jaket</div><span class="cat-btn">Lihat</span>
+    </div>
+    <div class="cat-card" onclick="filterKategori('kaos',this)">
+      <img src="q.jpg" alt="Kaos"><div class="cat-label">Kaos</div><span class="cat-btn">Lihat</span>
+    </div>
+    <div class="cat-card" onclick="filterKategori('topi',this)">
+      <img src="w.jpg" alt="Topi"><div class="cat-label">Topi</div><span class="cat-btn">Lihat</span>
+    </div>
+    <div class="cat-card" onclick="filterKategori('tas',this)">
+      <img src="tas1.webp" alt="Tas"><div class="cat-label">Tas</div><span class="cat-btn">Lihat</span>
+    </div>
+  </section>
+  <button class="filter-reset" id="filterResetBtn" onclick="resetFilter()">✕ Tampilkan Semua Produk</button>
+
+  <div id="searchResult">
+    <h4>🔍 Hasil Pencarian: "<span id="searchKeyword"></span>"</h4>
+    <div class="search-result-grid" id="searchResultGrid"></div>
+  </div>
+  <p id="noResult">❌ Produk tidak ditemukan.</p>
+
+  <div class="section-title" id="product">Produk Unggulan</div>
+  <section class="product-section">
+    <div class="product-grid">
+
+      <!-- 1. Topi — 3 gambar -->
+      <div class="product-card" data-kategori="topi">
+        <div class="badge-promo">Promo</div>
+        <div class="product-slider">
+          <div class="slider-track" id="sl-1">
+            <img src="topi.jpg" alt="Baseball Cap 1">
+            <img src="topi2.jpg" alt="Baseball Cap 2">
+            <img src="w.jpg" alt="Baseball Cap 3">
+          </div>
+          <button class="slider-btn prev" onclick="slideMove('sl-1',-1)">&#8249;</button>
+          <button class="slider-btn next" onclick="slideMove('sl-1',1)">&#8250;</button>
+          <div class="slider-dots" id="dots-sl-1"></div>
+        </div>
+        <div class="product-info">
+          <h3>Stone Island Kid's Logo Embroidered Baseball Cap, Blue</h3>
+          <div class="price-options">
+            <label class="price-item"><input type="radio" name="price1" value="1678840"><span class="price-old">Rp 1.678.840</span></label>
+            <label class="price-item"><input type="radio" name="price1" value="1263457" checked><span class="price-new">Rp 1.263.457</span></label>
+          </div>
+          <div class="order-controls"><label>Jumlah:</label><input type="number" value="1" min="1" id="qty1"></div>
+          <button class="btn-add" onclick="tambahKeKeranjang('Stone Island Kid\'s Logo Embroidered Baseball Cap, Blue','price1','qty1','topi.jpg')">Tambah ke Keranjang</button>
+        </div>
+      </div>
+
+      <!-- 2. Jaket — 2 gambar -->
+      <div class="product-card" data-kategori="jaket">
+        <div class="product-slider">
+          <div class="slider-track" id="sl-2">
+            <img src="jaket2.jpg" alt="Hooded Jacket 1">
+            <img src="e.jpg" alt="Hooded Jacket 2">
+          </div>
+          <button class="slider-btn prev" onclick="slideMove('sl-2',-1)">&#8249;</button>
+          <button class="slider-btn next" onclick="slideMove('sl-2',1)">&#8250;</button>
+          <div class="slider-dots" id="dots-sl-2"></div>
+        </div>
+        <div class="product-info">
+          <h3>Stone Island Men Compass Hooded Jacket</h3>
+          <p class="price-single">Rp 12.765.683</p>
+          <div class="order-controls"><label>Jumlah:</label><input type="number" value="1" min="1" id="qty2"></div>
+          <button class="btn-add" onclick="tambahKeKeranjang('Stone Island Men Compass Hooded Jacket','','qty2','jaket2.jpg',12765683)">Tambah ke Keranjang</button>
+        </div>
+      </div>
+
+      <!-- 3. Kaos — 2 gambar -->
+      <div class="product-card" data-kategori="kaos">
+        <div class="product-slider">
+          <div class="slider-track" id="sl-3">
+            <img src="switer.jpg" alt="T-Shirt 1">
+            <img src="q.jpg" alt="T-Shirt 2">
+          </div>
+          <button class="slider-btn prev" onclick="slideMove('sl-3',-1)">&#8249;</button>
+          <button class="slider-btn next" onclick="slideMove('sl-3',1)">&#8250;</button>
+          <div class="slider-dots" id="dots-sl-3"></div>
+        </div>
+        <div class="product-info">
+          <h3>Stone Island Men's Logo Print T-Shirt, White</h3>
+          <p class="price-single">Rp 2.150.000</p>
+          <div class="order-controls"><label>Jumlah:</label><input type="number" value="1" min="1" id="qty3"></div>
+          <button class="btn-add" onclick="tambahKeKeranjang('Stone Island Men\'s Logo Print T-Shirt','','qty3','kaos.jpg',2150000)">Tambah ke Keranjang</button>
+        </div>
+      </div>
+
+      <!-- 4. Tas Shoulder — 3 gambar -->
+      <div class="product-card" data-kategori="tas">
+        <div class="product-slider">
+          <div class="slider-track" id="sl-4">
+            <img src="tas1.webp" alt="Shoulder Bag 1">
+            <img src="tas2.webp" alt="Shoulder Bag 2">
+            <img src="tas3.webp" alt="Shoulder Bag 3">
+          </div>
+          <button class="slider-btn prev" onclick="slideMove('sl-4',-1)">&#8249;</button>
+          <button class="slider-btn next" onclick="slideMove('sl-4',1)">&#8250;</button>
+          <div class="slider-dots" id="dots-sl-4"></div>
+        </div>
+        <div class="product-info">
+          <h3>Stone Island Compass Patch Shoulder Bag</h3>
+          <p class="price-single">Rp 3.450.000</p>
+          <div class="order-controls"><label>Jumlah:</label><input type="number" value="1" min="1" id="qty4"></div>
+          <button class="btn-add" onclick="tambahKeKeranjang('Stone Island Compass Patch Shoulder Bag','','qty4','tas1.webp',3450000)">Tambah ke Keranjang</button>
+        </div>
+      </div>
+
+      <!-- 5. Waistbag — 2 gambar -->
+      <div class="product-card" data-kategori="tas">
+        <div class="badge-new">New</div>
+        <div class="product-slider">
+          <div class="slider-track" id="sl-5">
+            <img src="Aa.jpg" alt="Waistbag 1">
+            <img src="SG.jpg" alt="Waistbag 2">
+          </div>
+          <button class="slider-btn prev" onclick="slideMove('sl-5',-1)">&#8249;</button>
+          <button class="slider-btn next" onclick="slideMove('sl-5',1)">&#8250;</button>
+          <div class="slider-dots" id="dots-sl-5"></div>
+        </div>
+        <div class="product-info">
+          <h3>Stone Island FW22 Waistbag</h3>
+          <p class="price-single">Rp 101.700</p>
+          <div class="order-controls"><label>Jumlah:</label><input type="number" value="1" min="1" id="qty5"></div>
+          <button class="btn-add" onclick="tambahKeKeranjang('Stone Island FW22 Waistbag','','qty5','sg-11134201-7rd55-lug8ck6g9m3108_avif.webp',101700)">Tambah ke Keranjang</button>
+        </div>
+      </div>
+
+      <!-- 6. Crewneck — 4 gambar -->
+      <div class="product-card" data-kategori="kaos">
+        <div class="badge-new">New</div>
+        <div class="product-slider">
+          <div class="slider-track" id="sl-6">
+            <img src="je.jpg" alt="Crewneck 1">
+            <img src="id.jpg" alt="Crewneck 2">
+            <img src="Mm.jpg" alt="Crewneck 3">
+            <img src="11.jpg" alt="Crewneck 4">
+          </div>
+          <button class="slider-btn prev" onclick="slideMove('sl-6',-1)">&#8249;</button>
+          <button class="slider-btn next" onclick="slideMove('sl-6',1)">&#8250;</button>
+          <div class="slider-dots" id="dots-sl-6"></div>
+        </div>
+        <div class="product-info">
+          <h3>Crewneck Stone Island Green Military</h3>
+          <p class="price-single">Rp 4.465.000</p>
+          <div class="order-controls"><label>Jumlah:</label><input type="number" value="1" min="1" id="qty6"></div>
+          <button class="btn-add" onclick="tambahKeKeranjang('Crewneck Stone Island Green Military','','qty6','id-11134207-8224s-mhr5vs5u21vq55_avif.webp',4465000)">Tambah ke Keranjang</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="about-section" id="about">
+    <h2>Tentang Kami</h2>
+    <div class="about-box">
+      <h3>🧥 Brand Kami</h3>
+      <p>Stone Island adalah brand fashion premium asal Italia yang didirikan pada tahun 1982 oleh Carlo Rivetti. Terkenal dengan inovasi material, teknik pewarnaan khusus, dan ikon kompas di lengan kiri, setiap produk Stone Island mencerminkan keunggulan desain dan teknologi tekstil terdepan di dunia.</p>
+    </div>
+    <div class="about-box">
+      <h3>📦 Produk Kami</h3>
+      <ul>
+        <li>👕 Kaos &amp; Crewneck premium berkualitas tinggi</li>
+        <li>🧥 Jaket eksklusif dengan material inovatif</li>
+        <li>🧢 Topi dengan logo embroidered original</li>
+        <li>👜 Tas &amp; Waistbag koleksi terbaru</li>
+      </ul>
+    </div>
+    <div class="about-box">
+      <h3>✅ Keunggulan Kami</h3>
+      <ul>
+        <li>🚚 Free Shipping untuk semua pesanan</li>
+        <li>💳 Pembayaran aman &amp; terpercaya</li>
+        <li>💰 Garansi uang kembali jika produk tidak sesuai</li>
+        <li>📞 Customer support 24/7 siap membantu</li>
+        <li>🏷️ Produk original bergaransi resmi</li>
+      </ul>
+    </div>
+    <div class="about-box about-contact">
+      <h3>📬 Hubungi Kami</h3>
+      <p>📧 Email: <a href="mailto:info@stoneislandindonesia.com">info@stoneislandindonesia.com</a></p>
+      <p>📱 WhatsApp: <a href="https://wa.me/6281234567890" target="_blank">+62 812-3456-7890</a></p>
+      <p>📍 Lokasi: Jakarta, Indonesia</p>
+      <p>🕐 Jam Operasional: Senin–Sabtu, 09.00–21.00 WIB</p>
+    </div>
+  </section>
+
+  <footer>&copy; 2025 Stone Island Indonesia. All rights reserved.</footer>
+</div><!-- /.main-content -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
